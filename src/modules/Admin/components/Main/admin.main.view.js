@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core';
 import { styles } from './styles';
 import { Route } from 'react-router-dom';
@@ -14,9 +14,10 @@ import { MfbView } from '../../../../shared/components/Mfb/mfb.view';
 import Hidden from '@material-ui/core/Hidden';
 import { NavigatorView } from '../Navigator/admin.navigator.view';
 import { HeaderView } from '../Header/admin.header.view';
+import { useMobileOpen } from '../../hooks/use-mobile-open.hook';
 
-function Admin(props) {
-  const [mobileOpen, setMobileOpen] = useState(false);
+const Admin = props => {
+  const [mobileOpen, setMobileOpen] = useMobileOpen(false);
 
   const { classes, location } = props;
 
@@ -85,7 +86,7 @@ function Admin(props) {
       </div>
     </div>
   );
-}
+};
 
 const AdminStyles = withStyles(styles)(Admin);
 export const AdminView = withRoot(AdminStyles);
