@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core';
 import { styles } from './styles';
 import { Route } from 'react-router-dom';
@@ -15,86 +15,76 @@ import Hidden from '@material-ui/core/Hidden';
 import { NavigatorView } from '../Navigator/admin.navigator.view';
 import { HeaderView } from '../Header/admin.header.view';
 
-class Admin extends React.Component {
-  state = {
-    mobileOpen: false,
-  };
+function Admin(props) {
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  handleDrawerToggle = () => {
-    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
-  };
+  const { classes, location } = props;
 
-  render() {
-    const { classes, location } = this.props;
-    return (
-      <div className={classes.root}>
-        <nav className={classes.drawer}>
-          <Hidden smUp implementation="css">
-            <NavigatorView
-              variant="temporary"
-              open={this.state.mobileOpen}
-              onClose={this.handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-              location={location}
-            />
-          </Hidden>
-          <Hidden xsDown implementation="css">
-            <NavigatorView
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-              variant="permanent"
-              open
-              location={location}
-            />
-          </Hidden>
-        </nav>
-        <div className={classes.appContent}>
-          <HeaderView
-            onDrawerToggle={this.handleDrawerToggle}
-            logoutAction={this.props.logoutAction}
+  return (
+    <div className={classes.root}>
+      <nav className={classes.drawer}>
+        <Hidden smUp implementation="css">
+          <NavigatorView
+            variant="temporary"
+            open={mobileOpen}
+            onClose={() => setMobileOpen(!mobileOpen)}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            location={location}
           />
-          <main className={classes.mainContent}>
-            <Route
-              path="/admin/parcel/list"
-              component={ParcelListPageContainer}
-            />
-            <Route
-              path="/admin/parcel/add"
-              component={ParcelFormPageContainer}
-            />
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <NavigatorView
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            variant="permanent"
+            open
+            location={location}
+          />
+        </Hidden>
+      </nav>
+      <div className={classes.appContent}>
+        <HeaderView
+          onDrawerToggle={() => setMobileOpen(!mobileOpen)}
+          logoutAction={props.logoutAction}
+        />
+        <main className={classes.mainContent}>
+          <Route
+            path="/admin/parcel/list"
+            component={ParcelListPageContainer}
+          />
+          <Route path="/admin/parcel/add" component={ParcelFormPageContainer} />
 
-            <Route
-              path="/admin/tractor/list"
-              component={TractorListPageContainer}
-            />
-            <Route
-              path="/admin/tractor/add"
-              component={TractorFormPageContainer}
-            />
+          <Route
+            path="/admin/tractor/list"
+            component={TractorListPageContainer}
+          />
+          <Route
+            path="/admin/tractor/add"
+            component={TractorFormPageContainer}
+          />
 
-            <Route
-              path="/admin/processed-parcel/list"
-              component={ProcessedParcelListPageContainer}
-            />
-            <Route
-              path="/admin/processed-parcel/add"
-              component={ProcessedParcelFormPageContainer}
-            />
-            <Route
-              path="/admin/processed-parcel/report"
-              component={ProcessedParcelReportPageContainer}
-            />
-          </main>
-          <div className={classes.footer}>
-            <MfbView />
-          </div>
+          <Route
+            path="/admin/processed-parcel/list"
+            component={ProcessedParcelListPageContainer}
+          />
+          <Route
+            path="/admin/processed-parcel/add"
+            component={ProcessedParcelFormPageContainer}
+          />
+          <Route
+            path="/admin/processed-parcel/report"
+            component={ProcessedParcelReportPageContainer}
+          />
+        </main>
+        <div className={classes.footer}>
+          <MfbView />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const AdminStyles = withStyles(styles)(Admin);
